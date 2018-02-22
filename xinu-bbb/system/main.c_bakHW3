@@ -1,0 +1,69 @@
+/*  main.c  - main */
+
+#include <xinu.h>
+
+process	main(void)
+{
+
+	/* Run the Xinu shell */
+
+	recvclr();
+	resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
+        int32 i =0;
+        while (i < 5){
+            
+            dumpProctab(1);
+            sleep(1);
+            i++;
+        }
+
+	/* Wait for shell to exit and recreate it */
+/*
+	while (TRUE) {
+		receive();
+		sleepms(200);
+		kprintf("\n\nMain process recreating shell\n\n");
+		resume(create(shell, 4096, 20, "shell", 1, CONSOLE)); 
+	}
+	return OK;
+    */
+}
+
+char *prssb[] = 
+{
+	"FREE ",
+	"CURR ", 
+	"READY ", 
+	"RECV ", 
+	"SLEEP ", 
+	"SUSP ", 
+	"WAIT ", 
+	"RECTIM",
+};
+
+void dumpProctab(int32 freeflag)
+
+{ 
+	int32 i;
+
+	struct procent *p;
+
+	kprintf("Process table dump:\n\n"); 
+	//kprintf("Num\tState\tPrio\tSem\tName\tmall\n"); 
+        kprintf("Num\tState\tPrio\tSem\tName\n"); 
+	kprintf("----------------------------------"); 
+	kprintf("----------------------------------\n");
+	
+	for (i = 0; i < NPROC; i++) 
+	{
+
+		p = &proctab[i];
+
+		if (freeflag || (p->prstate != PR_FREE)) 
+		{
+			kprintf("%d\t%6s\t%d\t%d\t%s\t\n", i, prssb[p->prstate], p->prprio, p->prsem, p->prname);
+                        //kprintf("%d\t%6s\t%d\t%d\t%s\t%u\n", i, prssb[p->prstate], p->prprio, p->prsem, p->prname, p->malleable);
+		}
+
+	}
+}
