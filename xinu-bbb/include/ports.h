@@ -1,4 +1,5 @@
 /* ports.h - isbadport */
+/* edit lab 4 */
 
 #define	NPORTS		30		/* Maximum number of ports	*/
 #define	PT_MSGS		100		/* Total messages in system	*/
@@ -9,6 +10,7 @@
 struct	ptnode	{			/* Node on list of messages 	*/
 	uint32	ptmsg;			/* A one-word message		*/
 	struct	ptnode	*ptnext;	/* Pointer to next node on list	*/
+        uint16  pttag;                  /* tag for message              */
 };
 
 struct	ptentry	{			/* Entry in the port table	*/

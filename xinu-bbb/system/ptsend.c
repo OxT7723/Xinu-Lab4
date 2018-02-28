@@ -1,4 +1,5 @@
 /* ptsend.c - ptsend */
+/* edit lab 4 */
 
 #include <xinu.h>
 
@@ -8,7 +9,8 @@
  */
 syscall	ptsend(
 	  int32		portid,		/* ID of port to use		*/
-	  umsg32	msg		/* Message to send		*/
+	  umsg32	msg,		/* Message to send		*/
+          uint16        tag           /* tag for message              */
 	)
 {
 	intmask	mask;			/* Saved interrupt mask		*/
@@ -18,9 +20,10 @@ syscall	ptsend(
 	struct	ptnode	*tailnode;	/* Last node in port or NULL	*/
 
 	mask = disable();
+        
 	if ( isbadport(portid) ||
-	     (ptptr= &porttab[portid])->ptstate != PT_ALLOC ) {
-		restore(mask);
+	     (ptptr= &porttab[portid])->ptstate != PT_ALLOC ) {   
+            restore(mask);
 		return SYSERR;
 	}
 
@@ -42,7 +45,11 @@ syscall	ptsend(
 	msgnode = ptfree;		/* Point to first free node	*/
 	ptfree  = msgnode->ptnext;	/* Unlink from the free list	*/
 	msgnode->ptnext = NULL;		/* Set fields in the node	*/
+
 	msgnode->ptmsg  = msg;
+        msgnode->pttag  = tag;          /* Set the tag field            */
+        
+        kprintf("--test %u--\n",msgnode->pttag);
 
 	/* Link into queue for the specified port */
 
