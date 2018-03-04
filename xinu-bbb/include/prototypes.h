@@ -354,6 +354,7 @@ extern	syscall	ptreset(int32, int32 (*)(int32));
 
 /* in file ptsend.c */
 extern	syscall	ptsend(int32, umsg32, uint16);
+extern	syscall ptwakeup(int32, uint16);
 
 /* in file putc.c */
 extern	syscall	putc(did32, char);

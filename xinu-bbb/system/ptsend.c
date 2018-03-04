@@ -48,8 +48,11 @@ syscall	ptsend(
 
 	msgnode->ptmsg  = msg;
         msgnode->pttag  = tag;          /* Set the tag field            */
+        msgnode->ptstate = PT_SEND;
         
-        kprintf("--test %u--\n",msgnode->pttag);
+        
+        
+        
 
 	/* Link into queue for the specified port */
 
@@ -62,5 +65,44 @@ syscall	ptsend(
 	}
 	signal(ptptr->ptrsem);
 	restore(mask);
+        ptwakeup(portid, tag);
 	return OK;
+}
+
+
+syscall ptwakeup ( 
+        int32		portid,		/* ID of port to use		*/
+        uint16        tag           /* tag for message              */
+)
+{
+        intmask	mask;			/* Saved interrupt mask		*/
+    	struct	ptentry	*ptptr;		/* Pointer to table entry	*/
+	//int32	seq;			/* Local copy of sequence num.	*/
+	//umsg32	msg;			/* Message to return		*/
+	struct	ptnode	*msgnode;	/* First node on message list	*/
+        mask = disable();
+        
+        if ( isbadport(portid) ||
+	     (ptptr= &porttab[portid])->ptstate != PT_ALLOC ) {
+		//restore(mask);
+		return (uint32)SYSERR;
+	}
+        
+        
+        
+        msgnode = ptptr->pthead;
+            
+            while(msgnode != NULL )
+            {
+                if(msgnode->pttag == tag && msgnode->ptstate == PT_RECV)
+                {
+                    signal(ptptr->ptssem);
+                    return OK;
+                }
+                msgnode = msgnode->ptnext;
+                //kprintf("--loop-wakeup-\n");
+            }
+    restore(mask);
+    return OK;
+
 }
