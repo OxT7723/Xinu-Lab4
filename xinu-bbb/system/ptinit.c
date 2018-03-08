@@ -7,7 +7,7 @@ struct	ptentry	porttab[NPORTS];	/* Port table			*/
 int32	ptnextid;			/* Next table entry to try	*/
 
 /*------------------------------------------------------------------------
- *  ptinit  -  Initialize all ports
+ *  ptinit  -  Initialize all ports 
  *------------------------------------------------------------------------
  */
 syscall	ptinit(

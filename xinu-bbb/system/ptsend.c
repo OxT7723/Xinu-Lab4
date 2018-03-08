@@ -67,16 +67,16 @@ syscall	ptsend(
 		tailnode->ptnext = msgnode;
 		ptptr->pttail = msgnode;
 	}
-	//signal(ptptr->ptrsem);
+	signal(ptptr->ptrsem);
         //kprintf("here-6\n");
 	restore(mask);
-        ptwakeup(portid, tag);
+        //ptwakeup(portid, tag);
         //kprintf("here-7\n");
 	return OK;
 }
 
 
-syscall ptwakeup ( 
+syscall ptwakeup (
         int32		portid,		/* ID of port to use		*/
         uint16        tag           /* tag for message              */
 )

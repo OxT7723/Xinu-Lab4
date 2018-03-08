@@ -17,7 +17,7 @@ uint32	ptrecv(
 	umsg32	msg;			/* Message to return		*/
 	struct	ptnode	*msgnode;	/* First node on message list	*/
         struct  ptnode  *prev;           /* */
-        struct  ptnode  *curr;           /* */
+        //struct  ptnode  *curr;           /* */
         struct	ptnode	*tailnode;	/* Last node in port or NULL	*/
         int32   found = 0;
         
@@ -48,16 +48,16 @@ uint32	ptrecv(
             
             //wait(ptptr->ptssem);
             //wait(ptptr->ptrsem);
-            if(msgnode ==NULL) //check if first instance looking for tag
-            {
-                kprintf("initFirstTime\n");
+          //  if(msgnode ==NULL) //check if first instance looking for tag
+        //    {
+                //kprintf("initFirstTime\n");
                 msgnode = ptptr->pthead;
                 //wait(msgnode->ptrsem);  
-            }
-            else {
-                kprintf("**2ndlop***\n");
-				kptintf("");
-            } 
+      //      }
+    //        else {
+  //              kprintf("**2ndlop***\n");
+//				kptintf("");
+//            } 
             
             
             //kprintf("my tag is %u \n",tag);
@@ -66,7 +66,8 @@ uint32	ptrecv(
             {
                 //kprintf("start loop\n");
                 //kprintf("--tag %u--\n",msgnode->pttag);
-                if (msgnode->pttag == tag && msgnode->ptstate == PT_SEND)
+                //if (msgnode->pttag == tag && msgnode->ptstate == PT_SEND)
+                if (msgnode->pttag == tag || tag == 0)
                 {
                     //kprintf("tag match %u--\n",msgnode->pttag);
                     
@@ -82,7 +83,7 @@ uint32	ptrecv(
                     else if (ptptr->pthead == msgnode) /* head remove and update  */
                     {
                         //kprintf("matched head \n");
-                        ptptr->pthead = msgnode->ptnext; 
+                        ptptr->pthead = msgnode->ptnext;
                         found = 1;
                         
                     } else { /* not at the head or the tail of the list */
@@ -124,10 +125,10 @@ uint32	ptrecv(
 
                     }
                     
-                    if(msgnode->ptstate == PT_RECV)
-                    {
-                        semdelete(msgnode->ptrsem); 
-                    }
+                    //if(msgnode->ptstate == PT_RECV)
+                    //{
+                      //  semdelete(msgnode->ptrsem); 
+                    //}
                     //kprintf("setting ptfree \n");
                     msgnode->ptnext = ptfree;		/* Return to free list	*/
                     msgnode->pttag = NULL;
@@ -150,38 +151,40 @@ uint32	ptrecv(
              till process is awaken by a new tag being stored to the list
              */
             
-            msgnode = ptfree;                   /* Point to first free node	*/
-            ptfree  = msgnode->ptnext;          /* Unlink from the free list	*/
-            msgnode->ptnext = NULL;		/* Set fields in the node	*/
+            //msgnode = ptfree;                   /* Point to first free node	*/
+            //ptfree  = msgnode->ptnext;          /* Unlink from the free list	*/
+            //msgnode->ptnext = NULL;		/* Set fields in the node	*/
 
-            msgnode->ptstate  = PT_RECV;
-            msgnode->pttag  = tag;              /* Set the tag field            */
-            msgnode->ptrsem = semcreate(0);     /* */
+            //msgnode->ptstate  = PT_RECV;
+            //msgnode->pttag  = tag;              /* Set the tag field            */
+            //msgnode->ptrsem = semcreate(0);     /* */
             
             //curr = msgnode;                     /* store current */
             
             /* Link into queue for the specified port */
             
-            tailnode = ptptr->pttail;
-            if(tailnode == NULL) {
-                ptptr->pttail = ptptr->pthead = msgnode;
-            } else {
-               tailnode->ptnext = msgnode;
-                ptptr->pttail = msgnode;
-            }
+            //tailnode = ptptr->pttail;
+            //if(tailnode == NULL) {
+//                ptptr->pttail = ptptr->pthead = msgnode;
+//            } else {
+//               tailnode->ptnext = msgnode;
+//                ptptr->pttail = msgnode;
+//            }
             
             
-            kprintf("tag %u getting block \n", tag);
+            //kprintf("tag %u getting block \n", tag);
             
-            signal(ptptr->ptssem);  /* unblock the port */
-            kprintf("after msg blocked \n");
+            recvtime(100);
+            
+            //signal(ptptr->ptssem);  /* unblock the port */
+            //kprintf("after msg blocked \n");
             
             //ptrsem   ptssem
-            wait(msgnode->ptrsem); /* block receiver till msg with correct tag is found */
-            kprintf("after tag wait\n");
+            //wait(msgnode->ptrsem); /* block receiver till msg with correct tag is found */
+            //kprintf("after tag wait\n");
             
-            kprintf("msg unblocked \n");
-            wait(ptptr->ptssem); /* block port while we check again */
+            //kprintf("msg unblocked \n");
+            //wait(ptptr->ptssem); /* block port while we check again */
         }
             
             

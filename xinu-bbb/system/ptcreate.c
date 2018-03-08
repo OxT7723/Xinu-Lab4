@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ptcreate  -  Create a port that allows "count" outstanding messages
+ *  ptcreate  -  Create a port that allows "count" outstanding messages 
  *------------------------------------------------------------------------
  */
 syscall	ptcreate(

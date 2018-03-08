@@ -7,7 +7,7 @@
 #define	PT_LIMBO	2		/* Port is being deleted/reset	*/
 #define	PT_ALLOC	3		/* Port is allocated		*/
 #define PT_WAIT         4               /* waiting on a message         */
-#define PT_SEND         5
+#define PT_SEND         5 
 #define PT_RECV         6
 
 struct	ptnode	{			/* Node on list of messages 	*/
