@@ -1,5 +1,4 @@
 /* in file addargs.c */
-/* edit lab 5 */
 extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
 /* in file am335x_eth_init.c */
@@ -347,14 +346,13 @@ extern	syscall	ptdelete(int32, int32 (*)(int32));
 extern	syscall	ptinit(int32);
 
 /* in file ptrecv.c */
-extern	uint32	ptrecv(int32, uint16);
+extern	uint32	ptrecv(int32);
 
 /* in file ptreset.c */
 extern	syscall	ptreset(int32, int32 (*)(int32));
 
 /* in file ptsend.c */
-extern	syscall	ptsend(int32, umsg32, uint16);
-extern	syscall ptwakeup(int32, uint16);
+extern	syscall	ptsend(int32, umsg32);
 
 /* in file putc.c */
 extern	syscall	putc(did32, char);

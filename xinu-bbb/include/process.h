@@ -60,3 +60,19 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+
+
+
+/* message queue for k number of messages per process */
+
+#define K_MSGS  5 
+struct msgque {
+	//int32 head;  /* head of msg que */
+	//int32 tail; 
+	int32 msgcount;
+	umsg32 msg[K_MSGS];
+	sid32	semwait;
+};
+
+struct msgque massageque[NPROC];
+struct msgque* procmsgque;

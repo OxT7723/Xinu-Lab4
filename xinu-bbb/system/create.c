@@ -25,6 +25,7 @@ pid32	create(
 	int32		i;
 	uint32		*a;		/* points to list of args	*/
 	uint32		*saddr;		/* stack address		*/
+	struct msgque *quemsg; /* queue of msgs */
 
 	mask = disable();
 	if (ssize < MINSTK)
@@ -79,6 +80,11 @@ pid32	create(
 	*--saddr = (long)0x00000053;	/* CPSR F bit set,		*/
 					/* Supervisor mode		*/
 	prptr->prstkptr = (char *)saddr;
+
+	quemsg = &massageque[pid];
+	quemsg->msgcount = 0;
+	quemsg->semwait = semcreate(0);
+
 	restore(mask);
 	return pid;
 }

@@ -34,3 +34,5 @@ xinu-bbb/compile/uboot-tool/source.txt
 xinu-bbb/compile/uboot-tool/mkimage.c
 xinu-bbb/compile/bin/mkvers
 xinu-bbb/compile/version
+/xinu-bbb/compile/uboot-tool
+/.vs
